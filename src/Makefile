@@ -1,16 +1,13 @@
+# FOR CORI
+# module load python swig cray-netcdf 
+
 SWIG = swig
 SWIG_FLAGS = -python -c++
-CXX_GCC = g++
-CXX = g++
-CFLAGS = -g -c -fPIC 
+CXX = icc
+CFLAGS = -g -c -fPIC
+LIBBLAS = 
 
-ATOM = /project/projectdirs/atom/atom-install-edison
-LOCAL = ${ATOM}/cesol
-
-#NTCCDIR =  ${LOCAL}/local/ntcc_intel
-#NTCCDIR =  /home/eiw/Projects/Docker/PS/install
-#NTCCDIR : Parent directory for PPPL Plasma State and NTCC Libraries
-NTCCDIR =  ../../install
+NTCCDIR = /global/common/software/atom/cori/share/ntcc_intel
 
 NETCDFDIR = ${NETCDF_DIR}/lib
 LDFLAGS = -shared -fPIC
@@ -21,9 +18,11 @@ LIBS = -L. \
     -lgeqdsk_mds -lmdstransp -lvaxonly -lnscrunch -lfluxav -lr8bloat -lpspline -lezcdf \
     -llsode -llsode_linpack -lsmlib -lcomput -lportlib \
     -lnetcdff -lnetcdf \
-    -lpython3.6m -lopenblas
+    -L${PYTHON_DIR}/lib -lpython3.7m \
+    ${LIBBLAS}
 
 INCDIR = -I${NTCCDIR}/include -I/usr/include/python3.6m
+INCDIR = -I${NTCCDIR}/include_ntcc -I${PYTHON_DIR}/include/python3.7m
 
 all: _pyplasmastate.so
 
